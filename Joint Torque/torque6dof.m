@@ -1,64 +1,49 @@
-function torque = torque6dof(t,t_dot,t_dotdot)
+function torque = torque6dof(q,q_dot,q_dotdot)
+    % returns how much torque or force each joint should apply to achieve
+    % required q, q_dot and q_dotdot
     %% Define 
     n = 6;
-    % syms l11 l12 lc11 lc12 l21 l22 lc21 lc22 l3 lc3 l41 l42 l43 lc41 lc42 l5 lc5 l6 lc6
-    l11 = 0.50; l12 = 0.50; lc11 = 0.25; lc12 = 0.25;
-    l21 = 0.50; l22 = 0.50; lc21 = 0.25; lc22 = 0.25; l3 = 0.50; lc3 = 0.25; 
-    l41 = 0.25; l42 = 0.50; l43 = 0.25; lc41 = 0.25; lc42 = 0.25;
-    l5 = 0.1; lc5 = 0.05; l6 = 0.1; lc6 = 0.05;
     
     
-    % M{i} is the initial transformation matrix of frame i-1 wrt frame i
-    M{1} = [eye(3) [0;-lc12;-lc11]; 0 0 0 1];
+    global DH l11 l12 l2 l3 l41 l42 l5 l61 l62;
+    dh = DH(q);
+    
+    % Center of mass
+    lc11 = l11/2; lc12 = l12/2;
+    lc2 = l2/2;
+    lc3 = l3/2;
+    lc41 = l41/2; lc42 = l42/2;
+    lc5 = l5/2;
+    lc61 = l61/2; lc62 = l62/2;
 
-    M{2} = [0   1   0   -(l12-lc12) ; 
-            -1  0   0   lc21         ; 
-            0   0   1   -(lc21+(l11-lc11)) ; 
-            0   0   0   1           ];
-
-    M{3} = [0   -1  0   lc3-(l21-lc21)   ; 
-            1   0   0   0           ; 
-            0   0   1   -(l22-lc22)        ; 
-            0   0   0   1           ];
-
-    M{4} = [0   1   0   0           ; 
-            0   0   -1  -lc42    ; 
-            -1  0   0   -(lc41+(l3-lc3)) ; 
-            0   0   0   1           ];
-
-    M{5} = [1   0   0   -lc5           ; 
-            0   0   1   -l43    ; 
-            0   -1   0  l42-lc42        ; 
-            0   0   0   1           ];
-
-    M{6} = [0   -1   0   0           ; 
-            0   0   -1   0   ; 
-            1   0   0   -(lc6+(l5-lc5))        ; 
-            0   0   0   1           ];
-    M{7} = [eye(3) [0;0;-(l6-lc6)]; 0 0 0 1];
+    lc = zeros(3,n); % COM coordinates in zero position wrt frame {0}
+    lc(:,1) = [0;lc12;lc11]; % COM1 coord in frame 0
+    lc(:,2) = [lc2;l12;l11]; % COM2 coord in frame 1
+    lc(:,3) = [l2;lc12;l11-lc3];
+    lc(:,4) = [l2-lc41;lc12;l11-l3-lc41];
+    lc(:,5) = [l2-l41+lc5;lc12;l11-l3-l42];
+    lc(:,6) = [l2-l41+l5+lc61;lc12;l11-l3-l42+lc62];
+    lc = [lc;ones(1,n)];
     
     % Screw axis of joint i in frame i
-    A{1} = [0;0;0;0;0;1];
-    A{2} = [0;0;1;-lc21;0;0];
-    A{3} = [0;0;1;0;lc3;0];
-    A{4} = [0;0;1;lc42;0;0];
-    A{5} = [0;0;1;0;-lc5;0];
-    A{6} = [0;0;1;0;0;0];
-    
-    m{n} = []; % mass of links
-    I{n} = []; % Moment of inertial of links
-    % for i=1:6
-    %     I{i} = sym("I"+string(i),[3 3]);
-    %     m{i} = sym("m"+string(i));
-    % end
-    for i=1:4
-        m{i} = 1;
-    end
-    m{5} = 0.2; m{6} = 0.2;
-    I{n} = [];
+    A = zeros(6,n);
+    A(:,1) = [0;0;0;0;0;1];
+    A(:,2) = [0;0;1;-lc2;0;0];
+    A(:,3) = [0;0;1;0;0;0];
+    A(:,4) = [0;0;1;lc42;0;0];
+    A(:,5) = [0;0;1;-lc5;0;0];
+    A(:,6) = [0;0;1;lc62;0;0];
+
+    m = zeros(n); % mass of links
     for i=1:n
-        I{i} = eye(3);
+        m(i) = 1;
     end
+        
+    I = zeros(3,3,n); % Moment of inertial of links
+    for i=1:n
+        I(:,:,i) = eye(3);
+    end
+
 %     r = 2.5; 
 %     I{1} = zeros(3,3);
 %     I{2} = [m{2}*l2^2/12+m{2}*r^2/4 0 0; 0 m{2}*r^2/2 0; 0 0 m{2}*l2^2/12+m{2}*r^2/4];
@@ -72,39 +57,59 @@ function torque = torque6dof(t,t_dot,t_dotdot)
     Vdot0 = [0;0;0;0;0;-9.81];
     
     Ftip = [0;0;0;0;0;0];
-    F{7} = Ftip; % Defining F_{n+1} = F7 = Ftip
-    
+    F = zeros(6,7);
+    F(:,7) = Ftip; % Defining F_{n+1} = F7 = Ftip
+
+
+    % xc is the COMi coordinates wrt dh frame i-1 
+    xc = zeros(4,7);
+    for i=1:n
+        T = eye(4);
+        for j=1:i-1 % Caculate T from frame 0 to i.
+            T=T*transDH(dh(j,:));
+        end
+        xc(:,i)=transformationInverse(T)*lc(:,i);
+    end
+
+    % M(:,:,i) is the initial transformation matrix of frame i-1 wrt frame i
+    M = zeros(4,4,n+1);
+    M(:,:,1) = [eye(3) -xc(1:3,1);0 0 0 1];
+    for i=2:n+1
+        M(:,:,i) = transformationInverse([eye(3) xc(1:3,i);0 0 0 1])*transformationInverse(transDH(dh(i-1,:)))*[eye(3) xc(1:3,i-1);0 0 0 1];
+    end
+
     % Don't do anything below
-    T{n+1} = M{n+1}; % Define T7 which creates 1:6 entries blank
-    V{n} = [];
-    Vdot{n} = [];
+    T = zeros(4,4,n+1);
+    T(:,:,n+1) = M(:,:,n+1); % Define T7 which creates 1:6 entries blank
+    V = zeros(6,n);
+    Vdot = zeros(6,n);
     
-    G{n} = [];
-    tau{n} = [];
+    G = zeros(6,6,n);
+    tau = zeros(6);
 
     %% Forward Iteration: from 1 to n
     % T{i} is transformation matrix of frame i-1 wrt frame i
     for i=1:n
-        T{i} = exp_matrix4(-box6(A{i}),t(i))*M{i};
-        % display(T{i})
+        T(:,:,i) = exp_matrix4(-box6(A(:,i)),q(i))*M(:,:,i);
+        % display(T(:,:,i))
         if (i==1)
-            V{i} = Ad(T{i})*V0 + A{i}*t_dot(i);
-            Vdot{i} = Ad(T{i})*Vdot0 + ad_twist(V{i})*A{i}*t_dot(i) + A{i}*t_dotdot(i);
+            V(:,i) = Ad(T(:,:,i))*V0 + A(:,i)*q_dot(i);
+            Vdot(:,i) = Ad(T(:,:,i))*Vdot0 + ad_twist(V(:,i))*A(:,i)*q_dot(i) + A(:,i)*q_dotdot(i);
         else
-            V{i} = Ad(T{i})*V{i-1} + A{i}*t_dot(i);
-            Vdot{i} = Ad(T{i})*Vdot{i-1} + ad_twist(V{i})*A{i}*t_dot(i) + A{i}*t_dotdot(i);
+            V(:,i) = Ad(T(:,:,i))*V(:,i-1) + A(:,i)*q_dot(i);
+            Vdot(:,i) = Ad(T(:,:,i))*Vdot(:,i-1) + ad_twist(V(:,i))*A(:,i)*q_dot(i) + A(:,i)*q_dotdot(i);
         end
     end
 
     %% Backward iteration: from n to 1
     for i=6:-1:1
-        G{i} = [I{i} zeros(3,3); zeros(3,3) m{i}*eye(3)];
-        F{i} = Ad(T{i+1})'*F{i+1} + G{i}*Vdot{i} - ad_twist(V{i})'*G{i}*V{i};
-        tau{i} = F{i}'*A{i}; 
+        G(:,:,i) = [I(:,:,i) zeros(3,3); zeros(3,3) m(i)*eye(3)];
+        F(:,i) = Ad(T(:,:,i+1))'*F(:,i+1) + G(:,:,i)*Vdot(:,i) - ad_twist(V(:,i))'*G(:,:,i)*V(:,i);
+        tau(i) = F(:,i)'*A(:,i); % how much torque is experienced by joint i
     end
     
     torque = zeros(6,1);
     for i=1:6
-        torque(i,1) = -tau{i};
+        torque(i,1) = -tau(i);
     end
 end
