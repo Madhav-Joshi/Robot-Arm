@@ -62,7 +62,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     xc = zeros(4,n+1);
     xc(:,1) = lc(:,1);
     for i=2:n
-        xc(:,i)=transformationInverse(T0(:,:,i-1))*lc(:,i);
+        xc(:,i)=Tinv(T0(:,:,i-1))*lc(:,i);
     end
 
     I = zeros(3,3,n); % Convert to ith frame orientation
@@ -87,7 +87,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     M = zeros(4,4,n+1);
     M(:,:,1) = [eye(3) -xc(1:3,1);0 0 0 1];
     for i=2:n+1
-        M(:,:,i) = transformationInverse([eye(3) xc(1:3,i);0 0 0 1])*transformationInverse(transDH(dh(i-1,1:4)))*[eye(3) xc(1:3,i-1);0 0 0 1];
+        M(:,:,i) = Tinv([eye(3) xc(1:3,i);0 0 0 1])*Tinv(transDH(dh(i-1,1:4)))*[eye(3) xc(1:3,i-1);0 0 0 1];
     end
     
     % Define T7 which creates 1:6 entries blank

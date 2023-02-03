@@ -13,9 +13,17 @@ function q = allInverseKinematics(Td)
         q_t(2) = atan2(p(2),p(1)) - atan2(-l4*sin(q_t(3)),l2-l4*cos(q_t(2)));
 
         % if sin(q(5))!=0;
-        q_t(5) = atan2(s2*(Td(1,3)^2+Td(2,3)^2)^0.5,Td(3,3));
-        q_t(6) = atan2(Td(3,1)/sin(q_t(5)),Td(3,2)/sin(q_t(5)));
-        q_t(4) = atan2(-Td(2,3)/sin(q_t(5)),-Td(1,3)/sin(q_t(5)));
+        if(Td(3,3)~=1)
+            q_t(5) = atan2(s2*(Td(1,3)^2+Td(2,3)^2)^0.5,Td(3,3));
+            q_t(6) = atan2(Td(3,1)/sin(q_t(5)),Td(3,2)/sin(q_t(5)));
+            q_t(4) = atan2(-Td(2,3)/sin(q_t(5)),-Td(1,3)/sin(q_t(5)));
+        else
+            q_t(5) = 0; % or pi but current configuration cannot go pi
+            q_t(4) = 0; % set this to be zero
+            q_t(6) = atan2( Td(2,1)*cos(q_t(2) + q_t(3)) - Td(1,1)*sin(q_t(2) + q_t(3)), ...
+                            Td(2,2)*cos(q_t(2) + q_t(3)) - Td(1,2)*sin(q_t(2) + q_t(3)));
+
+        end
         
     end
     q = zeros(6,4);
