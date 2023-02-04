@@ -1,4 +1,4 @@
-function [q, q_dot, q_ddot, time_sequence, energy]=trajectory_planning(initial_q,final_q)
+function [q, q_dot, q_ddot, time_sequence]=trajectory_planning(initial_q,final_q)
     if(size(final_q,1)~=6)
         error('pass qf as a column vector')
         return
@@ -16,19 +16,19 @@ function [q, q_dot, q_ddot, time_sequence, energy]=trajectory_planning(initial_q
 
     % if final pose and initial pose is within a limit there is no need to move that joint
     if(abs(initial_q(2)-final_q(2))<eps)
-        q2d_=[1];
+        q2d_=1;
     end
     if(abs(initial_q(3)-final_q(3))<eps)
-        q3d_=[1];
+        q3d_=1;
     end
     if(abs(initial_q(4)-final_q(4))<eps)
-        q4d_=[1];
+        q4d_=1;
     end
     if(abs(initial_q(5)-final_q(5))<eps)
-        q5d_=[1];
+        q5d_=1;
     end
     if(abs(initial_q(6)-final_q(6))<eps)
-        q6d_=[1];
+        q6d_=1;
     end
 
     % setting up final_q for any given desired q and direction
@@ -43,7 +43,7 @@ function [q, q_dot, q_ddot, time_sequence, energy]=trajectory_planning(initial_q
     path_lengths = zeros(1, no_of_possible_paths);
     possible_final_q = zeros(6, no_of_possible_paths);
     count = 0;
-
+    tic
     for q2d=q2d_
         for q3d=q3d_
             for q4d=q4d_
@@ -65,7 +65,7 @@ function [q, q_dot, q_ddot, time_sequence, energy]=trajectory_planning(initial_q
             end
         end
     end
-
+    toc
     [path_lengths,sortIdx] = sort(path_lengths);
     % sort possible_final_q in the order of shortest path lengths
     possible_final_q = possible_final_q(:, sortIdx);
@@ -75,22 +75,29 @@ function [q, q_dot, q_ddot, time_sequence, energy]=trajectory_planning(initial_q
     no_of_collision_free_paths = 0;
 
     for i=1:no_of_possible_paths
+        disp("begin evaluating trajectories for collsion")
         sampling_resolution = path_lengths(i) / sampling_ratio;
         s = linspace(0, 1, sampling_resolution);
         waypoints_to_check = (possible_final_q(:, i) - initial_q) * s + initial_q;
         collision=0;
+        disp("collision check")
+        tic
         for t=1:size(waypoints_to_check,2)
             config = waypoints_to_check(:, t);
             collision=self_collision_check(config);
             if(collision)
                 break;
             end
-        end                    
+        end
+        toc
         if(~collision)
             % do velocity planning
+            disp("velocity planning")
+            tic
             [q, q_dot, q_ddot, time_sequence] = plan_velocity_trapezoidal_profile(waypoints_to_check);
+            toc
             % calculate tau, energy
-            [tau, energy] = calculate_trajectory_energy(time_sequence, q, q_dot, q_ddot);
+            %[~, energy] = calculate_trajectory_energy(time_sequence, q, q_dot, q_ddot);
             no_of_collision_free_paths = no_of_collision_free_paths + 1;
             break;
         end
