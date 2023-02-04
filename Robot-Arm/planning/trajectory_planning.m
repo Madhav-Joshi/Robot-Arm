@@ -52,7 +52,7 @@ function [q_final, q_dot_final, q_ddot_final, time_sequence_final, energy_final]
 
     waypoints_to_check=zeros(6,0);
 
-    debug = 0;
+    %debug = 0;
     for q2d=q2d_
         for q3d=q3d_
             for q4d=q4d_
@@ -78,19 +78,19 @@ function [q_final, q_dot_final, q_ddot_final, time_sequence_final, energy_final]
                             end
                         end                    
                         if(~collision)
-                            debug = debug + 1;
-                            disp("traj:")
-                            disp(debug)
+                            %debug = debug + 1;
+                            %disp("traj:")
+                            %disp(debug)
                             %%energy check
                             % do velocity planning
                             [q, q_dot, q_ddot, time_sequence] = plan_velocity_trapezoidal_profile(waypoints_to_check);
                             % calculate tau, energy
                             [tau, energy] = calculate_trajectory_energy(time_sequence, q, q_dot, q_ddot);
-                            disp("energy:")
-                            disp(energy)
+                            %disp("energy:")
+                            %disp(energy)
                             % check if this trajectory energy is less than minimal energy stored in process
                             if energy < energy_final
-                                disp(debug)
+                                %disp(debug)
                                 q_final = q;
                                 q_dot_final = q_dot;
                                 q_ddot_final = q_ddot;
