@@ -6,7 +6,8 @@ q = [0;0;0;0;0;0];
 q_dot = [0;0;0;0;0;0];
 q_dotdot = zeros(n_links,1);
 
-l11 = 648.9/1000; l12 = 196.12/1000; 
+
+l11 = 648.9/1000; l12 = 217.95/1000; 
 l21 = 82/1000; l22 = 365.5/1000; 
 l3 = 81.25/1000;  
 l4 = 309/1000;
@@ -20,7 +21,13 @@ DH = @(q)[  pi/2        l11+q(1)    l12     0       0;
             q(4)        l4          0       pi/2    1;
             q(5)        0           0       -pi/2    1;
             -pi/2+q(6)  l5+l61      l62     0       1   ]; % DH Parameters
-torque6dof(q,q_dot,q_dotdot)
+
+% read mass and inertia from xlsx and store it in a mat file
+inertia = readmatrix('inertia.csv');
+
+save('robot_description.mat','inertia','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62')
+
+torque6dof(q,q_dot,q_dotdot);
 
 joint_limits=zeros(6,2); %column 1 contains lower limit and column 2 contains upper limit
 joint_limits(1,:)=[0.0,0.6];
@@ -58,7 +65,7 @@ b_dim(:,5)=[49;42;59.5]/1000;
 f_c(:,6)=[-23.35;0;-97*0.5]/1000;
 b_dim(:,6)=[109;84;97]/1000;
 
-save('robot_description.mat','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62','n_links','f_c','b_dim')
+save('robot_description.mat','n_links','f_c','b_dim','-append')
 
 %% visualize initial collision boxes
 [T,A]=fk_for_ik([0;0;0;0;0;0],zeros(4,4));
