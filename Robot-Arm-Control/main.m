@@ -1,3 +1,7 @@
+clc
+clear
+close all
+
 addpath(genpath(pwd))
 n_links=6;
 q = [0;0;0;0;0;0];
