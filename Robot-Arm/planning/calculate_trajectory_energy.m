@@ -2,8 +2,6 @@
 % q_dot [6 X size(time_sequence)]
 % tau [ 6 X size(time_sequence)]
 function [tau, energy] = calculate_trajectory_energy(time_sequence, q, q_dot, q_ddot)
-
-robot = load_robot_model();
 total_time_steps = size(time_sequence, 2);
 tau = zeros(6, total_time_steps);
 for i = 1:1:total_time_steps

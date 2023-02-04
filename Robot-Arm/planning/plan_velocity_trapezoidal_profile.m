@@ -5,7 +5,7 @@ function [q_, q_dot, q_ddot, time_sequence] = plan_velocity_trapezoidal_profile(
 max_vel_revolute_joint = 0.0873; % 5deg/s
 max_acc_revolute_joint = 0.3142; % 18 deg/s^2 0.3142
 max_vel_prismatic_joint = 0.09; % to be on the safe side
-max_acc_prismatic_joint = 0.04; % change this
+max_acc_prismatic_joint = 0.08; % change this
 
 max_vel_joints = [max_vel_prismatic_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint];
 max_acc_joints = [max_acc_prismatic_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint];
