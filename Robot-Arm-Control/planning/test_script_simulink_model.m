@@ -7,11 +7,11 @@ qf = [0.75;pi/2;pi/2;pi/2;pi/2;pi/2];
 
 %% unit testing for functions
 % [possible_directions_final_q] = generate_q_final_directions(qi, qf);
-% [final_qf] = path_planning(qi, qf);
+[waypoints] = path_planning(qi, qf);
 
 %% obtain joint value sequences for trajectory with minimal energy
 % tic
-[q, q_dot, q_ddot, time_sequence]=trajectory_planning(qi,qf);
+% [q, q_dot, q_ddot, time_sequence]=trajectory_planning_qfinal(qi,qf);
 % toc
 % success = visualize_trajectory(q);
 

@@ -1,4 +1,4 @@
-function [final_qf] = path_planning(initial_q, collision_free_ik_solutions)
+function [final_waypoints] = path_planning(initial_q, collision_free_ik_solutions)
 
 num_collision_free_ik_solutions = size(collision_free_ik_solutions, 2);
 possible_directions_final_config = zeros(6, 0);
@@ -42,7 +42,7 @@ for i=1:num_possible_paths
         end
     end
     if(~collision)
-        final_qf = possible_final_q(:, i);
+        final_waypoints = waypoints_to_check;
         break;
     end
     

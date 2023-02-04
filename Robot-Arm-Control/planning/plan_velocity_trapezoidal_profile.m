@@ -32,7 +32,7 @@ while 1
     if isnan(T)
         error("no planning required, we are already at final position")
     end
-    time_sequence = linspace(0, T, T);
+    time_sequence = linspace(0, T, T*2);
     total_time_steps = size(time_sequence, 2);
     
     % define joint values , vel, acc
