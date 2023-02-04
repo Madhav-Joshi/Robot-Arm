@@ -1,3 +1,4 @@
+addpath(genpath(pwd))
 n_links=6;
 q = [0;0;0;0;0;0];
 q_dot = [0;0;0;0;0;0];
@@ -19,9 +20,9 @@ DH = @(q)[  pi/2        l11+q(1)    l12     0       0;
             -pi/2+q(6)  l5+l61      l62     0       1   ]; % DH Parameters
 
 % read mass and inertia from xlsx and store it in a mat file
-inertia = readmatrix('inertia.csv');
+inertia = readmatrix('./torque_files/inertia.csv');
 
-save('robot_description.mat','inertia','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62')
+save('./torque_files/robot_description.mat','inertia','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62')
 
 torque6dof(q,q_dot,q_dotdot)
 
@@ -61,7 +62,7 @@ b_dim(:,5)=[49;42;59.5]/1000;
 f_c(:,6)=[-23.35;0;-97*0.5]/1000;
 b_dim(:,6)=[109;84;97]/1000;
 
-save('robot_description.mat','n_links','f_c','b_dim','-append')
+save('./torque_files/robot_description.mat','n_links','f_c','b_dim','-append')
 
 %% visualize initial collision boxes
 [T,A]=fk_for_ik([0;0;0;0;-pi/4;0],zeros(4,4));
