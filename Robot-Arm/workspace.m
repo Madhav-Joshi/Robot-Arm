@@ -1,8 +1,9 @@
 function [reachable_poses,count] = workspace(joint_limits)
-	q2_=joint_limits(2,1):0.1:joint_limits(2,2);
-    q3_=joint_limits(2,1):0.1:joint_limits(2,2);
-    q4_=joint_limits(2,1):0.1:joint_limits(2,2);
-    q5_=joint_limits(2,1):0.1:joint_limits(2,2);
+    delta_theta=0.2;
+	q2_=joint_limits(2,1):delta_theta:joint_limits(2,2);
+    q3_=joint_limits(2,1):delta_theta:joint_limits(2,2);
+    q4_=joint_limits(2,1):delta_theta:joint_limits(2,2);
+    q5_=joint_limits(2,1):delta_theta:joint_limits(2,2);
     reachable_poses=zeros(6,size(q2_,2)*size(q3_,2)*size(q4_,2)*size(q5_,2));
     count=1;
     for q2=q2_
