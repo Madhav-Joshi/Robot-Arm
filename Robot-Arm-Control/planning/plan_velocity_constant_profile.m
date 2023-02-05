@@ -13,7 +13,7 @@ argmaxvel = max_vel_joints(argmaxindex);
 while 1
     % calculate time required by the joint that travels largest to reach its final position
     T = (abs(waypoints(argmaxindex, 1) - waypoints(argmaxindex, no_of_waypoints))) / argmaxvel;
-    time_sequence = linspace(0, T, no_of_waypoints);
+    time_sequence = linspace(0, T, T);
     
     % define joint values , vel, acc
     q_ = zeros(6, no_of_waypoints);
