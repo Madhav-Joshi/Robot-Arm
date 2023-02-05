@@ -74,9 +74,9 @@ box_6_dof_plot2(q1(:, time_steps1), 1.0, 0)
 grid on
 xlim([-1, 1]);
 ylim([-0.5, 1.3]);
-zlim([0, 3]);
-traj1 = "Trajectory 1 Energy: " + string(energy1);
-traj2 = "Trajectory 2 Energy: " + string(energy2);
-traj3 = "Trajectory 3 Energy: " + string(energy3);
+zlim([0, 1.6]);
+traj1 = "Trajectory 1 Energy: " + string(energy1) + "J";
+traj2 = "Trajectory 2 Energy: " + string(energy2) + "J";
+traj3 = "Trajectory 3 Energy: " + string(energy3) + "J";
 legend(p,traj1, traj2, traj3)
 axis equal
