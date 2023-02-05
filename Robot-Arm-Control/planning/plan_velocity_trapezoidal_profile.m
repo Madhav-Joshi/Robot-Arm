@@ -17,8 +17,8 @@ initial_q = waypoints(:, 1)';
 q_v = max_vel_joints ./ abs(final_q - initial_q);
 q_a = max_acc_joints ./ abs(final_q - initial_q);
 
-q_v(q_v>1000) = 0;
-q_a(q_a>1000) = 0;
+q_v(q_v>10) = 0;
+q_a(q_a>10) = 0;
 
 q_T = (q_a + (q_v .* q_v))./(q_v .* q_a);
 q_T(isnan(q_T)) = 0;
@@ -29,6 +29,7 @@ while 1
     
     % calculate the maximum time required to complete the traj
     T = (q_a(argmaxindex) + (q_v(argmaxindex) .* q_v(argmaxindex)))./(q_v(argmaxindex) .* q_a(argmaxindex));
+    disp("T")
     disp(T)
     if isnan(T)
         error("no planning required, we are already at final position")
