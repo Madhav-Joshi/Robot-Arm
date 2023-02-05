@@ -20,10 +20,10 @@ for i=1:total_time_steps
         s_dot(i) = v;
         s_ddot(i) = 0;
 
-    elseif (t <= T - (v/a)) && (t <= T)
+    elseif (t > T - (v/a)) && (t <= T)
         s(i) = -1 * ( (a*a*(T-t)*(T-t)) + (2*v*v) - (2*T*a*v) )/(2*a);
         s_dot(i) = a * (T - t);
-        s_ddot(i) = -a;
+        s_ddot(i) = -1 * a;
 
     else % t>T
         s(i) = 1;

@@ -1,6 +1,6 @@
 % theta(t), theta_dot(t), theta_ddot(t), series_t
 % % waypoints, size: 6 x no of waypoints
-function [q_, q_dot, q_ddot, time_sequence] = plan_velocity_trapezoidal_profile(waypoints)
+function [q_, q_dot, q_ddot, time_sequence, speed, v] = plan_velocity_trapezoidal_profile(waypoints)
 
 max_vel_revolute_joint = 0.0873; % 5deg/s
 max_acc_revolute_joint = 0.3142; % 18 deg/s^2 0.3142
@@ -17,8 +17,8 @@ initial_q = waypoints(:, 1)';
 q_v = max_vel_joints ./ abs(final_q - initial_q);
 q_a = max_acc_joints ./ abs(final_q - initial_q);
 
-q_v(isinf(q_v)) = 0;
-q_a(isinf(q_a)) = 0;
+q_v(q_v>1000) = 0;
+q_a(q_a>1000) = 0;
 
 q_T = (q_a + (q_v .* q_v))./(q_v .* q_a);
 q_T(isnan(q_T)) = 0;
@@ -29,10 +29,11 @@ while 1
     
     % calculate the maximum time required to complete the traj
     T = (q_a(argmaxindex) + (q_v(argmaxindex) .* q_v(argmaxindex)))./(q_v(argmaxindex) .* q_a(argmaxindex));
+    disp(T)
     if isnan(T)
         error("no planning required, we are already at final position")
     end
-    time_sequence = linspace(0, T, T*2);
+    time_sequence = linspace(0, T, T*10);
     total_time_steps = size(time_sequence, 2);
     
     % define joint values , vel, acc
