@@ -10,7 +10,7 @@ Td = [
 qi = zeros(6, 1);
 
 [q, q_dot, q_ddot, time_sequence, speed, tau, v] = controller(Td, qi);
-% success = visualize_trajectory(q);
+success = visualize_trajectory(q);
 
 % for i=1:100
 % Calculate screw axis and then interpolate theta for orientation.
