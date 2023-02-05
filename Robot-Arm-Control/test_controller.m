@@ -1,30 +1,16 @@
 %% define xf as transformation matrix   
-% Td = [0.0000 0.7071   -0.7071   -0.3589;
-%     1.0000   -0.0000    0.0000    0.5478;
-%     0.0000   -0.7071   -0.7071    0.5858;
-%          0         0         0    1.0000];
-
-% Td=[1.0000    0.0000    0.0000    0.2734;
-%    -0.0000    1.0000         0    0.5334;
-%          0         0    1.0000    1.3769;
-%          0         0         0    1.0000];
-
-% [0.75,pi/2,-pi/2,0,-pi/2,0]
-Td = [0.0000    1.0000         0   -0.2590;
-   -0.0000    0.0000    1.0000    0.6747;
-    1.0000   -0.0000    0.0000    1.2500;
+% Td = forwardKinematicsAllJoints([0.75; pi/2; -pi/2; pi/4; -pi/4; 0])
+Td = [ 
+    0.0000    0.7071   -0.7071   -0.4089;
+    0.7071    0.5000    0.5000    0.7142;
+    0.7071   -0.5000   -0.5000    1.1752;
          0         0         0    1.0000];
 
-% zeros(6,1)
-% Td = [0.0000    0.0000   -1.0000   -0.0848;
-%     0.0000    1.0000    0.0000    0.2180;
-%     1.0000   -0.0000    0.0000    0.5000;
-%          0         0         0    1.0000];
 
 qi = zeros(6, 1);
 
-[q, q_dot, q_ddot, time_sequence] = controller(Td, qi);
-success = visualize_trajectory(q);
+[q, q_dot, q_ddot, time_sequence, speed, tau, v] = controller(Td, qi);
+% success = visualize_trajectory(q);
 
 % for i=1:100
 % Calculate screw axis and then interpolate theta for orientation.
