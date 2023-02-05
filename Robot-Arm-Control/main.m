@@ -10,7 +10,7 @@ q_dotdot = zeros(n_links,1);
 
 l11 = 648.9/1000; l12 = 267.95/1000; 
 l21 = 82/1000; l22 = 365.5/1000; 
-l3 = 81.25/1000;  
+l3 = 111.25/1000;  
 l4 = 309/1000;
 l5 = 42.25/1000;
 l61 = 99/1000; l62 = 14.35/1000;
@@ -37,7 +37,7 @@ joint_limits(3,:)=[0,2*pi];
 joint_limits(4,:)=[0,2*pi];
 joint_limits(5,:)=[-1.8326,1.8326];
 joint_limits(6,:)=[0,2*pi];       
-task_space=[-0.5 0.5;0.15 0.55;0.5 1.2];  %define task space in every row column1 is lower and column2 is hihger limit
+task_space=[-0.9 0.9;0.1 0.92;0.5 1.2];  %define task space in every row column1 is lower and column2 is hihger limit
 
 %% collision boxes description
 f_c=zeros(3,n_links); %stores the framei to collision box distance vector in framei 
