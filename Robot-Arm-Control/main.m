@@ -66,7 +66,7 @@ b_dim(:,5)=[49;42;59.5]/1000;
 f_c(:,6)=[-23.35;0;-97*0.5]/1000;
 b_dim(:,6)=[109;84;97]/1000;
 
-save('./torque_files/robot_description.mat','n_links','f_c','b_dim','-append')
+save('./robot_description.mat','n_links','f_c','b_dim','-append')
 
 %% visualize initial collision boxes
 [T,A]=fk_for_ik([0;0;0;0;-pi/4;0],zeros(4,4));
