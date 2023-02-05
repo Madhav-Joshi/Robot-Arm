@@ -1,10 +1,10 @@
 % Cartesian straight line trajectory energy calculation
 
-% [0.75,pi/2,-pi/2,0,-pi/2,0]
-Td = [0.0000    1.0000         0   -0.3090;
-   -0.0000    0.0000    1.0000    0.7747;
-    1.0000   -0.0000    0.0000    1.2500;
-         0         0         0    1.0000];
+% [0.25,pi/2,-pi/2,0,-pi/2,0]
+% Td = [0.0000    1.0000         0   -0.3090;
+%    -0.0000    0.0000    1.0000    0.7747;
+%     1.0000   -0.0000    0.0000    0.7500;
+%          0         0         0    1.0000];
 
 % [0,pi/2,0,0,0,0]
 % Td = [-0.0000   -1.0000   -0.0000   -0.0000;
@@ -17,6 +17,10 @@ Td = [0.0000    1.0000         0   -0.3090;
 %    -0.0000    0.7071    0.7071    0.5863;
 %     1.0000   -0.0000    0.0000    0.5000;
 %          0         0         0    1.0000];
+
+qf = [0 pi/6 -pi/15 0 0 0];
+Td = forwardKinematicsAllJoints(qf);
+Td = Td(:,:,6);
 
 qi = zeros(6, 1);
 Ti = forwardKinematicsAllJoints(qi);
@@ -50,6 +54,7 @@ joint_space_traversed(:,1) = qi;
 
 %% Calculate inverse kinematics for each discrete point (6,4,n)
 for j=1:num_pts-1
+    disp(j)    
     % Make Tdj for for next space
     Rotj = Ti(1:3,1:3)*Rot(:,:,j+1);
     Tdj = [Rotj,p(:,j+1); 0 0 0 1];
@@ -61,9 +66,9 @@ for j=1:num_pts-1
     
     % Check if closest IK solution is collision free
     if(self_collision_check(q_closest))
-        disp(j)
         error('Straight line path does not exist')
     end
     joint_space_traversed(:,j) = q_closest;
 end
+visualize_trajectory(joint_space_traversed);
 

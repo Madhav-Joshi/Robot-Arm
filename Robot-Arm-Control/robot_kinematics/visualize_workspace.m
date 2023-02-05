@@ -3,8 +3,8 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
     %shown and on right all possible the oreintation of the position which we select on
     %the left plot is shown
 
-    delta_x=0.02;
-    delta_y=0.02;
+    delta_x=0.2;
+    delta_y=0.2;
 
     % gridlines ---------------------------
     subplot(1,2,1)
@@ -37,10 +37,11 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
         subplot(1,2,1)
         plot(reachable_poses(1,POI),reachable_poses(2,POI))
         hold off
+        [x(minIdx),y(minIdx)]
         subplot(1,2,2)
-        [X,Y,Z]=sphere;
-        hSurface=surf(X,Y,Z);
-%         set(hSurface,'FaceColor',[0 0 1], 'FaceAlpha',0.5,'EdgeAlpha', 0);
         plot3(reachable_poses(4,POI),reachable_poses(5,POI),reachable_poses(6,POI),'ko')
+        xlabel('x');
+        ylabel('y');
+        zlabel('z');
     end
 end
