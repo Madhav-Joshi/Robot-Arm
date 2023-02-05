@@ -7,7 +7,7 @@ opts.fontType   = 'Times';
 opts.fontSize   = 9;
 
 % create new figure
-% fig = figure; clf
+fig = figure; clf
 
 %% plot
 % load('q.mat')
@@ -20,11 +20,14 @@ for i=1:time_steps
     eef(:, i) = T_(:,:,6) * base_frame;
 end
 
-box_6_dof_plot2(q(:, 1))
+box_6_dof_plot2(q(:, 1), 0.25, 1)
 hold on
 p = plot3(eef(1, :), eef(2, :), eef(3, :));
 hold off
-box_6_dof_plot2(q(:, time_steps))
+box_6_dof_plot2(q(:, 61), 0.25, 0)
+% box_6_dof_plot2(q(:, 2*time_steps/4), 0.7, 0)
+box_6_dof_plot2(q(:, 121), 0.25, 0)
+box_6_dof_plot2(q(:, time_steps), 1.0, 0)
 grid on
 p.LineWidth = 2;
 xlim([-1, 1]);
@@ -54,6 +57,6 @@ axis equal
 % set(gca,'LooseInset',max(get(gca,'TightInset'), 0.02))
 % set(lgd,'FontSize',6)
 % 
-% % export to png
-% fig.PaperPositionMode   = 'auto';
-% print([opts.saveFolder 'q_torque_plot'], '-dpng', '-r600')
+% export to png
+fig.PaperPositionMode   = 'auto';
+print([opts.saveFolder 'eef_3d_plot'], '-dpng', '-r600')
