@@ -69,7 +69,7 @@ b_dim(:,6)=[109;84;97]/1000;
 save('robot_description.mat','n_links','f_c','b_dim','-append')
 
 %% visualize initial collision boxes
-[T,A]=fk_for_ik([0;0;0;0;-pi/4;0],zeros(4,4));
+[T_,A]=fk_for_ik([0.2; pi/6; -2*pi/3; 0; -pi/20; 0],zeros(4,4));
 Link_Frame=eye(4);
 collision_boxes{n_links}=[];
 for i=1:n_links
