@@ -20,16 +20,19 @@ for i=1:time_steps
     eef(:, i) = T_(:,:,6) * base_frame;
 end
 
-box_6_dof_plot2(q(:, 1))
+box_6_dof_plot2(q(:, 1), 0.3, station)
 hold on
 p = plot3(eef(1, :), eef(2, :), eef(3, :));
 hold off
-box_6_dof_plot2(q(:, time_steps))
+box_6_dof_plot2(q(:, 45), 0.5, station)
+box_6_dof_plot2(q(:, 2*time_steps/4), 0.7, station)
+box_6_dof_plot2(q(:, 135), 0.9, station)
+box_6_dof_plot2(q(:, time_steps), 1.0, staio)
 grid on
 p.LineWidth = 2;
 xlim([-1, 1]);
-ylim([-1, 1]);
-zl
+ylim([-0.8, 1]);
+zlim([0, 3]);
 axis equal
 
 % %% plot

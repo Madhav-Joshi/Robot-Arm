@@ -1,5 +1,5 @@
 function [reachable_poses,count] = workspace(joint_limits)
-    delta_theta=0.08;
+    delta_theta=0.3;
     load('robot_description.mat')
     q2_=joint_limits(2,1):delta_theta:joint_limits(2,2);
     q3_=joint_limits(3,1):delta_theta:joint_limits(3,2);
@@ -46,8 +46,7 @@ function [reachable_poses,count] = workspace(joint_limits)
                                     A(:,:,6)=transDH(dh(6,:));
                                     Link_Frame=A(:,:,1)*A(:,:,2)*A(:,:,3)*A(:,:,4)*A(:,:,5)*A(:,:,6);
                                     collision_boxes{6}=collisionBox(b_dim(1,6),b_dim(2,6),b_dim(3,6));
-                                    collision_boxes{6}.Pose=Link_Frame*[eye(3),f_c(:,6);0 0 0 1];
-                                    
+                                    collision_boxes{6}.Pose=Link_Frame*[eye(3),f_c(:,6);0 0 0 1];                                    
                                     if~(checkCollision(collision_boxes{1},collision_boxes{6}) || checkCollision(collision_boxes{2},collision_boxes{6}) || checkCollision(collision_boxes{3},collision_boxes{6})|| checkCollision(collision_boxes{4},collision_boxes{6})||checkCollision(collision_boxes{5},collision_boxes{6}))
                                         reachable_poses(:,count)=[Link_Frame(1:3,4);Link_Frame(1:3,3)];
                                         count=count+1;
