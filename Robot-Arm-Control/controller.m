@@ -1,4 +1,4 @@
-function [q, q_dot, q_ddot, time_sequence, speed, tau, v] = controller(Td, qi)
+function [q, q_dot, q_ddot, time_sequence, speed, tau, v, energy] = controller(Td, qi)
 % obtain all ik solution
 q = allInverseKinematics(Td);
 % perform collision check for IK
