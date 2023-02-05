@@ -3,8 +3,8 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
     %shown and on right all possible the oreintation of the position which we select on
     %the left plot is shown
 
-    delta_x=0.02;
-    delta_y=0.02;
+    delta_x=0.2;
+    delta_y=0.2;
 
     % gridlines ---------------------------
     subplot(1,2,1)
