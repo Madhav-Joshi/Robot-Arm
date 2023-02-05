@@ -19,7 +19,9 @@ for i=1:time_steps
     T_ = forwardKinematicsAllJoints(q(:, i)) ;
     eef(:, i) = T_(:,:,6) * base_frame;
 end
-
+set(gca,'Xticklabel',[])
+set(gca,'Yticklabel',[])
+set(gca,'Zticklabel',[])
 box_6_dof_plot2(q(:, 1), 0.25, 1)
 hold on
 p = plot3(eef(1, :), eef(2, :), eef(3, :));
