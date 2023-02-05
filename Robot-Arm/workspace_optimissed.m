@@ -1,4 +1,4 @@
-function [reachable_poses,count] = workspace(joint_limits)
+function [reachable_poses,count] = workspace_optimissed(joint_limits)
     delta_theta=0.5;
     load('robot_description.mat')
     q2_=joint_limits(2,1):delta_theta:joint_limits(2,2);
@@ -48,9 +48,11 @@ function [reachable_poses,count] = workspace(joint_limits)
                                     collision_boxes{6}.Pose=Link_Frame*[eye(3),f_c(:,6);0 0 0 1];
                                     
                                     if~(checkCollision(collision_boxes{1},collision_boxes{6}) || checkCollision(collision_boxes{2},collision_boxes{6}) || checkCollision(collision_boxes{3},collision_boxes{6})|| checkCollision(collision_boxes{4},collision_boxes{6})||checkCollision(collision_boxes{5},collision_boxes{6}))
+                                        axis equal
+                                        box_6_dof_plot([0;q2;q3;q4;q5;0])
+                                        pause(1)
                                         reachable_poses(:,count)=[Link_Frame(1:3,4);Link_Frame(1:3,3)];
                                         count=count+1;
-                                    end
                                 end
                             end 
                         end              
