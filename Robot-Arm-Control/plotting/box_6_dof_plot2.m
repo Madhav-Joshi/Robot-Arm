@@ -1,4 +1,4 @@
-function []=box_6_dof_plot(q)
+function []=box_6_dof_plot2(q)
     load 'robot_description.mat' n_links b_dim f_c
     [~,A]=fk_for_ik(q,zeros(4,4));
     Link_Frame=eye(4);
@@ -9,7 +9,7 @@ function []=box_6_dof_plot(q)
         collision_boxes{i}.Pose=Link_Frame*[eye(3),f_c(:,i);0 0 0 1]; 
     end
     hold on
-    
+    colors = ["red", "green", "blue", "yellow", "cyan", "magenta"];
 %     faces = [1,2,6,5; 1,2,3,4; 2,3,7,6; 3,4,8,7; 4,1,5,6; 5,6,7,8];
     faces = [1,2,6,5; 1,2,4,3; 2,4,8,6; 4,3,7,8; 3,1,5,7; 5,6,8,7];
     vertices = zeros([n_links,8,3]);
@@ -31,7 +31,7 @@ function []=box_6_dof_plot(q)
                 end
             end
         end
-        patch('Faces',faces,'Vertices',squeeze(vertices(j,:,:)), 'Facecolor', 'red')
+        patch('Faces',faces,'Vertices',squeeze(vertices(j,:,:)), 'Facecolor', colors(j))
     end
 
     

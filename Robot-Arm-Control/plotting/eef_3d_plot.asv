@@ -28,8 +28,8 @@ box_6_dof_plot2(q(:, time_steps))
 grid on
 p.LineWidth = 2;
 xlim([-1, 1]);
-ylim([-0.8, 1]);
-zlim([0, 3]);
+ylim([-1, 1]);
+zl
 axis equal
 
 % %% plot
