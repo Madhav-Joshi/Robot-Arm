@@ -13,7 +13,7 @@ function q = allInverseKinematics(Td)
         Q1 = Q0 - X1;
         D = (-Q1(1)^2-Q1(2)^2+l22^2+l4^2)/(2*l22*l4);
 
-        if(abs(D)>1+1e-2)
+        if(abs(D)>1+5e-2)
             disp(D)
             error('solution does not exist')        
         elseif(abs(D)>1)
