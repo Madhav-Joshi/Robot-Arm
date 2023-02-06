@@ -9,12 +9,17 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
     opts.fontType   = 'Times';
     opts.fontSize   = 7;
 
+<<<<<<< HEAD
     % create new figure
     fig = figure; clf
     
     %the left plot is shown
     delta_x=0.02;
     delta_y=0.02;
+=======
+    delta_x=0.2;
+    delta_y=0.2;
+>>>>>>> 888f8852fbe2a5f6a71bbe3ec2d098280621ac13
 
     % gridlines ---------------------------
     subplot(1,2,1)

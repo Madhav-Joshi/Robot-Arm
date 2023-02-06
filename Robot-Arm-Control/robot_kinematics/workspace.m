@@ -1,5 +1,9 @@
 function [reachable_poses,count] = workspace(joint_limits)
+<<<<<<< HEAD
     delta_theta=0.08;
+=======
+    delta_theta=0.1;
+>>>>>>> 888f8852fbe2a5f6a71bbe3ec2d098280621ac13
     load('robot_description.mat')
     q2_=joint_limits(2,1):delta_theta:joint_limits(2,2);
     q3_=joint_limits(3,1):delta_theta:joint_limits(3,2);
