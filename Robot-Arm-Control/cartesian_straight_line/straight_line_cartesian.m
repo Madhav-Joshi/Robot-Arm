@@ -22,7 +22,7 @@
 % [0 pi/2 -pi/4 0 0 0]
 % [0 pi/2 -pi/3 0 pi/3 0]
 %df = 0.3, 0.7417, -2.16, -1.57, -1.57, -1.426
-qf = [0.3 0 -pi/4 0 0 0];
+qf = [0 pi/2 0 0 0 0];
 Td = forwardKinematicsAllJoints(qf);
 Td = Td(:,:,6);
 xf = Td(1:3, 4);
