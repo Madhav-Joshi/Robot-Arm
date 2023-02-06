@@ -1,10 +1,25 @@
 function [flag]=visualize_workspace(reachable_poses,task_space)
     %this function plots the workspace. On left all the possible points are
     %shown and on right all possible the oreintation of the position which we select on
-    %the left plot is shown
+    % define figure properties
+    opts.Colors     = get(groot,'defaultAxesColorOrder');
+    opts.saveFolder = 'img/';
+    opts.width      = 8;
+    opts.height     = 6;
+    opts.fontType   = 'Times';
+    opts.fontSize   = 7;
 
+<<<<<<< HEAD
+    % create new figure
+    fig = figure; clf
+    
+    %the left plot is shown
+    delta_x=0.02;
+    delta_y=0.02;
+=======
     delta_x=0.2;
     delta_y=0.2;
+>>>>>>> 888f8852fbe2a5f6a71bbe3ec2d098280621ac13
 
     % gridlines ---------------------------
     subplot(1,2,1)
@@ -22,7 +37,12 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
     points_x=(g_x(1:end-1)+g_x(2:end))*0.5;
     points_y=(g_y(1:end-1)+g_y(2:end))*0.5;
     [x_,y_]=meshgrid(points_x,points_y);
-    h=plot(reshape(x_,1,[]),reshape(y_,1,[]),'ko');
+    scatter(reachable_poses(1,:),reachable_poses(2,:));
+    xlabel('x in m')
+    ylabel('y in m')
+    title('workspace in cartisean')
+    hold on
+    h=plot(reshape(x_,1,[]),reshape(y_,1,[]),'bo');
     h.ButtonDownFcn = @directionsPlotter;
     drawnow
     function [] = directionsPlotter(hObj, event)
@@ -33,15 +53,16 @@ function [flag]=visualize_workspace(reachable_poses,task_space)
         dist = pdist2(pt(1,1:2),coordinates);      %distance between your selection and all points
         [~, minIdx] = min(dist);% index of minimum distance to points  
         POI=(reachable_poses(1,:)<=(x(minIdx)+delta_x*0.5) & reachable_poses(1,:)>=(x(minIdx)-delta_x*0.5) & reachable_poses(2,:)<=(y(minIdx)+delta_y*0.5) & reachable_poses(2,:)>=(y(minIdx)-delta_y*0.5));
-        hold on
-        subplot(1,2,1)
-        plot(reachable_poses(1,POI),reachable_poses(2,POI))
-        hold off
-        [x(minIdx),y(minIdx)]
         subplot(1,2,2)
+        hold off
+        [x,y,z]=sphere;
+        s=surf(x*0.1,y*0.1,z*0.1,zeros(size(z))+0.1);
+        s.EdgeColor = 'none';  
+        hold on
         plot3(reachable_poses(4,POI),reachable_poses(5,POI),reachable_poses(6,POI),'ko')
         xlabel('x');
         ylabel('y');
         zlabel('z');
+        title('possible orieintations for selected point in taskspace')
     end
 end

@@ -4,7 +4,7 @@ opts.saveFolder = 'img/';
 opts.width      = 8;
 opts.height     = 6;
 opts.fontType   = 'Times';
-opts.fontSize   = 9;
+opts.fontSize   = 7;
 
 % create new figure
 fig = figure; clf
