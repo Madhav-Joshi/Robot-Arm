@@ -12,11 +12,12 @@ function q = allInverseKinematics(Td)
         X1 = X1(1:3,4);
         Q1 = Q0 - X1;
         D = (-Q1(1)^2-Q1(2)^2+l22^2+l4^2)/(2*l22*l4);
-        
-        if(D>1+1e-4)
+
+        if(abs(D)>1+1e-2)
+            disp(D)
             error('solution does not exist')        
-        elseif(D>1)
-            D=1.0;
+        elseif(abs(D)>1)
+            D=0.9999999*sign(D);
         end
         q_t(3) = atan2(s1*((1-D^2)^0.5),D);
         q_t(2) = atan2(Q1(2),Q1(1)) - atan2(-l4*sin(q_t(3)),l22-l4*cos(q_t(3)));

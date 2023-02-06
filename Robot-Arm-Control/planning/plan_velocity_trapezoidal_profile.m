@@ -10,15 +10,15 @@ max_acc_prismatic_joint = 0.08; % change this
 max_vel_joints = [max_vel_prismatic_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint];
 max_acc_joints = [max_acc_prismatic_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint];
 
-no_of_waypoints = size(waypoints, 2);
+no_of_waypoints = size(waypoints, 2);%endfvbnnv
 final_q = waypoints(:, no_of_waypoints)';
 initial_q = waypoints(:, 1)';
 
 q_v = max_vel_joints ./ abs(final_q - initial_q);
 q_a = max_acc_joints ./ abs(final_q - initial_q);
 
-q_v(q_v>1000) = 0;
-q_a(q_a>1000) = 0;
+q_v(q_v>10) = 0;
+q_a(q_a>10) = 0;
 
 q_T = (q_a + (q_v .* q_v))./(q_v .* q_a);
 q_T(isnan(q_T)) = 0;
@@ -29,11 +29,12 @@ while 1
     
     % calculate the maximum time required to complete the traj
     T = (q_a(argmaxindex) + (q_v(argmaxindex) .* q_v(argmaxindex)))./(q_v(argmaxindex) .* q_a(argmaxindex));
+    disp("T")
     disp(T)
     if isnan(T)
         error("no planning required, we are already at final position")
     end
-    time_sequence = linspace(0, T, T*10);
+    time_sequence = linspace(0, T, T);
     total_time_steps = size(time_sequence, 2);
     
     % define joint values , vel, acc
