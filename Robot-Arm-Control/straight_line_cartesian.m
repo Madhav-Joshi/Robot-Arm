@@ -18,7 +18,7 @@
 %     1.0000   -0.0000    0.0000    0.5000;
 %          0         0         0    1.0000];
 
-qf = [0 pi/6 0 0 0 0];
+qf = [0 0 -pi/4 0 0 0];
 Td = forwardKinematicsAllJoints(qf);
 Td = Td(:,:,6);
 xf = Td(1:3, 4);
@@ -51,7 +51,7 @@ Rot = axang2rotm(axang);
 IKf = allInverseKinematics(Td);
 Q = collision_check_IK(IKf); % Collision free 
 
-joint_space_traversed = zeros(6,num_pts);
+joint_space_traversed = zeros(6,num_pts-1);
 joint_space_traversed(:,1) = qi;
 
 %% Calculate inverse kinematics for each discrete point (6,4,n)
@@ -71,7 +71,8 @@ for j=1:num_pts-1
     if(argmin==1)
         disp(IKj)
         disp(vecnorm(IKj-joint_space_traversed(:,j)))
-        disp(joint_space_traversed(j))
+        disp(joint_space_traversed(:,j))
+        disp(Tdj)
     end 
     
     % Check if closest IK solution is collision free
@@ -80,5 +81,5 @@ for j=1:num_pts-1
     end
     joint_space_traversed(:,j) = q_closest;
 end
-% visualize_trajectory(joint_space_traversed);
+visualize_trajectory(joint_space_traversed);
 

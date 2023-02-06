@@ -4,7 +4,8 @@ close all
 %%
 addpath(genpath(pwd))
 n_links=6;
-q = [0;0;0;0;0;0];
+%q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
+q = zeros(6,1);
 q_dot = [0;0;0;0;0;0];
 q_dotdot = zeros(n_links,1);
 
@@ -28,7 +29,7 @@ inertia = readmatrix('inertia.csv');
 
 save('robot_description.mat','inertia','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62','n_links')
 
-torque6dof(q,q_dot,q_dotdot);
+torque6dof(q,q_dot,q_dotdot)
 
 joint_limits=zeros(6,2); %column 1 contains lower limit and column 2 contains upper limit
 joint_limits(1,:)=[0.0,0.6];

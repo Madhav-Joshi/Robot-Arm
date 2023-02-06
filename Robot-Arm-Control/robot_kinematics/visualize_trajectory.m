@@ -1,4 +1,4 @@
-function [success]=visualize_trajectory(timestamp,waypoints)
+function [success]=visualize_trajectory(waypoints)
 % timestamp(1,n), waypoints(6,n)
     load('robot_description.mat')
     collision_boxes{n_links}=[];
