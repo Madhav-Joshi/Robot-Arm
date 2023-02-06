@@ -8,33 +8,9 @@ function []=box_6_dof_plot(q)
         Link_Frame=Link_Frame*A(:,:,i);
         collision_boxes{i}.Pose=Link_Frame*[eye(3),f_c(:,i);0 0 0 1]; 
     end
-    hold on
     
-%     faces = [1,2,6,5; 1,2,3,4; 2,3,7,6; 3,4,8,7; 4,1,5,6; 5,6,7,8];
-    faces = [1,2,6,5; 1,2,4,3; 2,4,8,6; 4,3,7,8; 3,1,5,7; 5,6,8,7];
-    vertices = zeros([n_links,8,3]);
-    for j=1:n_links  
-        counter = 1;
-        
-        center_box = collision_boxes{j}.Pose(1:3,4);
-        
-        for z = [-1,1]
-            for x = [-1,1]
-                for y = [-1,1]
-                    
-                    vertices(j,counter,:) =(center_box + ...
-                                            collision_boxes{j}.Pose(1:3,1)*collision_boxes{j}.X*x/2 + ...
-                                            collision_boxes{j}.Pose(1:3,3)*collision_boxes{j}.Z*z/2 + ...
-                                            collision_boxes{j}.Pose(1:3,2)*collision_boxes{j}.Y*y/2)';
-                    counter  = counter + 1;
-%         show(collision_boxes{j});
-                end
-            end
-        end
-        patch('Faces',faces,'Vertices',squeeze(vertices(j,:,:)), 'Facecolor', 'red')
-    end
-
-    
-
-
+    for i=1:n_links
+        hold on
+        show(collision_boxes{i})
+    end     
 end

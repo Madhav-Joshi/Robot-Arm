@@ -1,8 +1,8 @@
-function [q_, q_dot, q_ddot] = cartesian_space_vel_plan(xi, xf, joint_space_traversed)
+function [q_, q_dot, q_ddot, time_sequence] = cartesian_space_vel_plan(xi, xf, joint_space_traversed)
 
 % joint_space_traversed = joint_space_traversed(:, 1:199);
 
-max_vel_eef = 0.003; %m/s
+max_vel_eef = 0.0026; %m/s
 max_acc_eef = 0.05;
 
 no_of_waypoints = size(joint_space_traversed, 2)

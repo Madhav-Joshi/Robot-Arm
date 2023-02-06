@@ -1,6 +1,6 @@
 % define figure properties
 opts.Colors     = get(groot,'defaultAxesColorOrder');
-opts.saveFolder = 'plotting/img/';
+opts.saveFolder = 'plotting/planning_img/';
 opts.width      = 8;
 opts.height     = 6;
 opts.fontType   = 'Times';
@@ -10,11 +10,11 @@ opts.fontSize   = 9;
 fig = figure; clf
 
 %% plot
-h = plot(time_sequence, q(1, :),'LineWidth',1);
+h = plot(time_sequence1, q1(1, :),'LineWidth',1);
 hold on
-h = plot(time_sequence, q_dot(1, :),'LineWidth',1);
+h = plot(time_sequence1, q1_dot(1, :),'LineWidth',1);
 hold on
-h = plot(time_sequence, q_ddot(1, :),'LineWidth',1);
+h = plot(time_sequence1, q1_ddot(1, :),'LineWidth',1);
 hold on
 
 %% plot

@@ -1,6 +1,6 @@
 % define figure properties
 opts.Colors     = get(groot,'defaultAxesColorOrder');
-opts.saveFolder = 'plotting/img/';
+opts.saveFolder = 'plotting/planning_img/';
 opts.width      = 8;
 opts.height     = 6;
 opts.fontType   = 'Times';
@@ -12,17 +12,17 @@ fig = figure; clf
 %% plot
 % load('q.mat')
 force_to_tau_conversion =  0.00793;
-plot(time_sequence, tau(1, :)*force_to_tau_conversion ,'LineWidth',1);
+plot(time_sequence1, tau1(1, :)*force_to_tau_conversion ,'LineWidth',1);
 hold on
-plot(time_sequence,tau(2, :),'LineWidth',1);
+plot(time_sequence1,tau1(2, :),'LineWidth',1);
 hold on
-plot(time_sequence, tau(3, :),'LineWidth',1);
+plot(time_sequence1, tau1(3, :),'LineWidth',1);
 hold on
-plot(time_sequence,tau(4, :),'LineWidth',1);
+plot(time_sequence1,tau1(4, :),'LineWidth',1);
 hold on
-plot(time_sequence,tau(5, :),'LineWidth',1);
+plot(time_sequence1,tau1(5, :),'LineWidth',1);
 hold on
-plot(time_sequence,tau(6, :),'LineWidth',1);
+plot(time_sequence1,tau1(6, :),'LineWidth',1);
 hold on
 
 %% plot

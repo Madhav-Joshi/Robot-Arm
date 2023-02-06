@@ -4,7 +4,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     %% Define 
     n = 6;
     load robot_description.mat inertia DH;
-    dh = DH(q);
+    dh = DH(zeros(6,1));
     
     lc = zeros(3,n+1); % COM coordinates in zero position wrt frame {0}
     m = zeros(n); % mass of links
@@ -14,7 +14,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
         m(i) = inertia(i,2);
         I0(:,:,i) = reshape(inertia(i,6:end),[3 3])';
     end
-    lc = [lc;ones(1,n+1)]; % For multiplication with transformation matrices
+    lc = [lc;ones(1,n+1)] % For multiplication with transformation matrices
        
     V0 = [0;0;0;0;0;0]; % Twist of the frame 0
     Vdot0 = [0;0;0;0;0;-9.81];
@@ -25,21 +25,24 @@ function torque = torque6dof(q,q_dot,q_dotdot)
 
     %% Don't do anything below
 
-    T0 = zeros(4,4,n); % Transformation matix from frame 0 to frame i
-    for i=1:n
-        T = eye(4);
-        for j=1:i
-            T = T*transDH(dh(j,1:4));
-        end
-        T0(:,:,i) = T; % Store transformation matrices from 0 to i
-    end
+%     T0 = zeros(4,4,n); % Transformation matix from frame 0 to frame i
+%     for i=1:n
+%         T = eye(4);
+%         for j=1:i
+%             T = T*transDH(dh(j,1:4));
+%         end
+%         T0(:,:,i) = T; % Store transformation matrices from 0 to i
+%     end
 
-     % xc is the COMi coordinates wrt dh frame i-1 
+    T0 = forwardKinematicsAllJoints(zeros(6,1));
+
+    % xc is the COMi coordinates wrt dh frame i-1 
     xc = zeros(4,n+1);
     xc(:,1) = lc(:,1);
     for i=2:n
         xc(:,i)=Tinv(T0(:,:,i-1))*lc(:,i);
     end
+    xc=xc
 
     I = zeros(3,3,n); % Convert to ith frame orientation
     for i=1:n
@@ -52,6 +55,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     for i=1:n
         A(:,i) = [0;0;dh(i,5);(-dh(i,5)*box3([0;0;1])*xc(1:3,i) + (1-dh(i,5))*[0;0;1])];
     end
+    A = A
     
     % M(:,:,i) is the initial transformation matrix of frame i-1 wrt frame i
     M = zeros(4,4,n+1);
