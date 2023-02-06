@@ -1,6 +1,6 @@
 function [q_, q_dot, q_ddot] = cartesian_space_vel_plan(xi, xf, joint_space_traversed)
 
-joint_space_traversed = joint_space_traversed(:, 1:199);
+% joint_space_traversed = joint_space_traversed(:, 1:199);
 
 max_vel_eef = 0.003; %m/s
 max_acc_eef = 0.05;
