@@ -1,6 +1,10 @@
 clear; clc;
 close all;
 
+%% Adding paths to dependencies and importing required data
+addpath(genpath('../Robot-Arm-Control'));
+run('main.m');
+
 %% Define xf as transformation matrix   
 
 % Transformation matrix of the final position
