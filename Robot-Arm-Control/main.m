@@ -4,15 +4,15 @@ close all
 %%
 addpath(genpath(pwd))
 n_links=6;
-%q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
-q = zeros(6,1);
+q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
+%q = zeros(6,1);
 q_dot = [0;0;0;0;0;0];
 q_dotdot = zeros(n_links,1);
 
 l11 = 648.9/1000; l12 = 267.95/1000; 
-l21 = 82/1000; l22 = 365.5/1000; 
+l21 = 82/1000; l22 = 290/1000; 
 l3 = 111.25/1000;  
-l4 = 309/1000;
+l4 = 360/1000;
 l5 = 42.25/1000;
 l61 = 99/1000; l62 = 14.35/1000;
 
@@ -70,7 +70,7 @@ b_dim(:,6)=[109;84;97]/1000;
 save('robot_description.mat','n_links','f_c','b_dim','-append')
 
 %% visualize initial collision boxes
-[T_,A]=fk_for_ik([0.2; pi/6; -2*pi/3; 0; -pi/20; 0],zeros(4,4));
+[T_,A]=fk_for_ik(q,zeros(4,4));
 Link_Frame=eye(4);
 collision_boxes{n_links}=[];
 for i=1:n_links
