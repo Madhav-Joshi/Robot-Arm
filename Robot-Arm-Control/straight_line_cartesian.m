@@ -38,7 +38,7 @@ Rif = Tif(1:3,1:3);
 axangif = rotm2axang(Rif); % Axis angle (1,4) with (vector,angle)
 vif = axangif(1:3); thetaif = axangif(4);
 
-num_pts = 50;
+num_pts = 200;
 % For now straight line, both in orientation and space
 p = Ti(1:3,4)+(pf-Ti(1:3,4))*(0:1/(num_pts-1):1); % linspace(Ti(1:3,4),pf,num_pts), shape(3,num_pts)
 theta = 0 + (thetaif-0)*(0:1/(num_pts-1):1); % linspace(0,thetaif,num_pts)
@@ -56,15 +56,23 @@ joint_space_traversed(:,1) = qi;
 
 %% Calculate inverse kinematics for each discrete point (6,4,n)
 for j=1:num_pts-1
-    disp(j)    
+       
     % Make Tdj for for next space
     Rotj = Ti(1:3,1:3)*Rot(:,:,j+1);
     Tdj = [Rotj,p(:,j+1); 0 0 0 1];
     % Calculate IK of first point
     IKj = allInverseKinematics(Tdj);
     % Find closest IK solution
-    [argvalue,argmin] = min(vecnorm(IKj-joint_space_traversed(j)));
+    [argvalue,argmin] = min(vecnorm(IKj-joint_space_traversed(:,j)));
     q_closest = IKj(:,argmin);
+
+    disp(string(j)+' '+ string(argvalue)+' '+argmin)
+
+    if(argmin==1)
+        disp(IKj)
+        disp(vecnorm(IKj-joint_space_traversed(:,j)))
+        disp(joint_space_traversed(j))
+    end 
     
     % Check if closest IK solution is collision free
     if(self_collision_check(q_closest))
@@ -72,5 +80,5 @@ for j=1:num_pts-1
     end
     joint_space_traversed(:,j) = q_closest;
 end
-visualize_trajectory(joint_space_traversed);
+% visualize_trajectory(joint_space_traversed);
 
