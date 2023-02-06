@@ -17,12 +17,17 @@
 %    -0.0000    0.7071    0.7071    0.5863;
 %     1.0000   -0.0000    0.0000    0.5000;
 %          0         0         0    1.0000];
-
-qf = [0 0 -pi/4 0 0 0];
+% [0 pi/4 -pi/4 0 0 0]
+% [0 0 -pi/4 0 0 0];
+% [0 pi/2 -pi/4 0 0 0]
+% [0 pi/2 -pi/3 0 pi/3 0]
+%df = 0.3, 0.7417, -2.16, -1.57, -1.57, -1.426
+qf = [0.3 0 -pi/4 0 0 0];
 Td = forwardKinematicsAllJoints(qf);
 Td = Td(:,:,6);
 xf = Td(1:3, 4);
 
+% qi 0 0 -pi/4 0 0 0
 qi = zeros(6, 1);
 Ti = forwardKinematicsAllJoints(qi);
 Ti = Ti(:,:,end);
@@ -81,5 +86,5 @@ for j=1:num_pts-1
     end
     joint_space_traversed(:,j) = q_closest;
 end
-visualize_trajectory(joint_space_traversed);
+% visualize_trajectory(joint_space_traversed);
 
