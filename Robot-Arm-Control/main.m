@@ -4,7 +4,8 @@ close all
 %%
 addpath(genpath(pwd))
 n_links=6;
-q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
+%q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
+q = zeros(6,1);
 q_dot = [0;0;0;0;0;0];
 q_dotdot = zeros(n_links,1);
 
