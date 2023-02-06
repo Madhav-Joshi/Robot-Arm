@@ -1,0 +1,22 @@
+%% define xf as transformation matrix   
+
+% Transformation matrix of the final position
+Td = [0 1 0 0.125;
+      0 0 1 0.5349;
+      1 0 0 1.1;
+      0 0 0 1 ];
+
+% Initial position of the 
+qi = zeros(6, 1);
+
+%% 
+[q1, q1_dot, q1_ddot, time_sequence1] = controller(Td1, qi1);
+time_sequence = time_sequence1;
+
+q_forward = q1;
+q_dot_forward = q1_dot;
+q_ddot_forward = q1_ddot;
+
+q_backward = flip(q1,2);
+q_dot_backward = -flip(q1_dot,2);
+q_ddot_backward = -flip(q1_ddot,2);
