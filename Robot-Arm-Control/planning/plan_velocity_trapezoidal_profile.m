@@ -10,7 +10,7 @@ max_acc_prismatic_joint = 0.08; % change this
 max_vel_joints = [max_vel_prismatic_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint, max_vel_revolute_joint];
 max_acc_joints = [max_acc_prismatic_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint, max_acc_revolute_joint];
 
-no_of_waypoints = size(waypoints, 2);
+no_of_waypoints = size(waypoints, 2);%endfvbnnv
 final_q = waypoints(:, no_of_waypoints)';
 initial_q = waypoints(:, 1)';
 
