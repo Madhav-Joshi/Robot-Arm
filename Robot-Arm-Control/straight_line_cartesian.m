@@ -18,7 +18,7 @@
 %     1.0000   -0.0000    0.0000    0.5000;
 %          0         0         0    1.0000];
 
-qf = [0 pi/6 0 0 0 0];
+qf = [0 0 -pi/4 0 0 0];
 Td = forwardKinematicsAllJoints(qf);
 Td = Td(:,:,6);
 xf = Td(1:3, 4);

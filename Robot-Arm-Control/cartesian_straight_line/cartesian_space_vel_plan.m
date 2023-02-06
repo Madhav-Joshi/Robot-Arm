@@ -1,21 +1,25 @@
-function [q, q_dot, q_ddot] = cartesian_space_vel_plan(xi, xf, joint_configs)
+function [q_, q_dot, q_ddot] = cartesian_space_vel_plan(xi, xf, joint_space_traversed)
 
-max_vel_eef = 0.09; %m/s
+joint_space_traversed = joint_space_traversed(:, 1:199);
+
+max_vel_eef = 0.003; %m/s
 max_acc_eef = 0.05;
 
-no_of_waypoints = size(joint_configs, 2);
+no_of_waypoints = size(joint_space_traversed, 2)
+norm(xf - xi)
+s_vel_max = max_vel_eef / norm(xf - xi)
+s_acc_max = max_acc_eef / norm(xf - xi)
 
-s_vel_max = max_vel_eef / norm(xf - xi);
-s_acc_max = max_acc_eef / norm(xf - xi);
+s_vel_max(s_vel_max>10) = 0
+s_acc_max(s_acc_max>10) = 0
 
-s_vel_max(s_vel_max>10) = 0;
-s_acc_max(s_acc_max>10) = 0;
-
-T = (s_acc_max + (s_vel_max * s_vel_max))/(s_vel_max * s_acc_max);
+T = (s_acc_max + (s_vel_max * s_vel_max))/(s_vel_max * s_acc_max)
 T(isnan(T)) = 0;
-
+IT = 1;
 while 1
-    
+    disp("iteration")
+    disp(IT);
+
     % calculate the maximum time required to complete the traj
     T = (s_acc_max + (s_vel_max * s_vel_max)) / (s_vel_max * s_acc_max);
     disp("T")
@@ -23,7 +27,7 @@ while 1
     if isnan(T)
         error("no planning required, we are already at final position")
     end
-    time_sequence = linspace(0, T, no_of_waypoints);
+    time_sequence = linspace(0, T, no_of_waypoints)
     disp("time sequence")
     
     % define joint values , vel, acc
@@ -34,7 +38,7 @@ while 1
     % v: link frame velocities, speed: link frame speed
     v = zeros(3, no_of_waypoints, 6);
     speed = zeros(1, no_of_waypoints, 6);
-
+    
     s = zeros(1, no_of_waypoints);
     s_dot = zeros(1, no_of_waypoints);
     s_ddot = zeros(1, no_of_waypoints);
@@ -63,29 +67,32 @@ while 1
             s_dot(i) = 0;
             s_ddot(i) = 0;
         end
+    end
     
     x = xi + (xf-xi) *s;
     x_dot = (xf-xi) * s_dot;
     x_ddot = (xf-xi) * s_ddot;
     disp("x")
-    disp(x)
-    time_step = time_sequence(2) - time_sequence(1);
+    %disp(x)
+
+    time_step = time_sequence(2) - time_sequence(1)
     disp("time step")
     disp(time_step)
     % calculate joint velocities
     for i=1:6
-        q(i, :) = joint_configs(i, :);
-
-        temp_vel = diff(joint_configs(i,:))/time_step;
-        temp_acc = diff(joint_configs(i,:), 2)/time_step;
-
+        q_(i, :) = joint_space_traversed(i, :);
+    
+        temp_vel = diff(joint_space_traversed(i,:))/time_step;
+        temp_acc = diff(joint_space_traversed(i,:), 2)/time_step;
+    
         q_dot(i, 1:no_of_waypoints-1) = temp_vel;
         q_ddot(i, 2:no_of_waypoints-1) = temp_acc;
-
+    
         q_dot(i, no_of_waypoints) = temp_vel(end);
         q_ddot(i, no_of_waypoints) = temp_acc(end);
         q_ddot(i, 1) = temp_acc(1);
     end
+
 
     % calculate link frame velocties
     for j = 1:1:no_of_waypoints
@@ -93,18 +100,17 @@ while 1
     end
     
     % calculate link frame speeds
-    speed(1, :, :) = sqrt(sum(v.*v, 1));
+    speed(1, :, :) = sqrt(sum(v.*v, 1))
 
     % check if all the speed is less than 0.1 m/s
     if all(speed < 0.1, "all")
         disp("yes!!")
         break
     else
-        s_vel_max = s_vel_max - (0.001);
+        s_vel_max = s_vel_max - (0.0001);
     end
+    IT = IT + 1;
     
-end
-
 end
 
 end
