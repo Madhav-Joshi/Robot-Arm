@@ -1,6 +1,6 @@
 % define figure properties
 opts.Colors     = get(groot,'defaultAxesColorOrder');
-opts.saveFolder = 'plotting/img/';
+opts.saveFolder = 'plotting/planning_img/';
 opts.width      = 8;
 opts.height     = 6;
 opts.fontType   = 'Times';

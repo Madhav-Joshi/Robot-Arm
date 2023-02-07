@@ -14,7 +14,7 @@ function [success]=visualize_trajectory(waypoints)
         for j=1:n_links     
             ylim([-0.1 1.3])
             xlim([-0.8,0.8])
-            zlim([0.1 1])
+            zlim([0.1 1.2])
             show(collision_boxes{j})
             hold on
         end
