@@ -9,20 +9,27 @@ import rospy
 import igvc_action_server.msg
 import numpy as np
 from std_msgs.msg import Float32MultiArray, Bool
-from cv_client1 import upward_movement_client
 from cv_client2 import port_detection_client
 from cv_client3 import port_detection_client_transit
 
 state_list = ['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']
 
+#s0: resting
+#s1: just turn the eef towards the car
+#s2: scanning, detecting port, and stopping
+#s4: going to that approximate location
+#s5: continuos adjustement to finely reach 
+#s6: wait 30 seconds
+#s7: unlatching thodu
+#s8: poora vapis aana to the initial state
+
 def master():
     def __init__(self):
-        self.charging_trigger = False
-        self.current_state = None
-        self.current_pose = False
-        self.car_detected = False
+        self.charging_trigger = False #flag from te user to start the process
+        self.current_state = None #the state from s1. s2, s3.. we are currently on
+        self.current_pose = False #4X4 T matrix from ground frame to eef frame
+        # self.car_detected = False # remove
         self.goal_pose = None #goal 4x4 matrix
-        self.goal_pose_s2 = None #goal 4x4 matrix
         self.goal_pose_cv_1 = None #goal 4x4 matrix
         self.goal_pose_cv_2 = None #goal 4x4 matrix
         self.latched = False
@@ -30,7 +37,9 @@ def master():
 
 
         self.home_pose = 
-        self.after_turn_pose = 
+        temp = np.eye(4)
+        temp[2,3] = 
+        self.after_turn_pose_transfrom =  
         self.scan_pose = 
 
         self.bool1 = True
@@ -41,6 +50,8 @@ def master():
         cv_port_det = rospy.Subscriber('/cv/port_detect', Bool, self.cv_port_cb)
         pose_pub_final = rospy.Publisher('/planning/goal_pose', Float32MultiArray, queue_size = 10)
         pose_pub_current = rospy.Publisher('/planning/current_pose', Float32MultiArray, queue_size = 10)
+
+    def
 
     def mat_comp(mat1, mat2):
         if mat1 == mat2 :
@@ -100,12 +111,11 @@ def master():
                 #call car detection client function
                 pose_pub.publish(self.flat_from_4x4(self.goal_pose_s2))
                 upward_movement_client(self.goal_pose_cv_2)
-                i+=1
+                
 
-            elif (self.current_task == 's3'):
                 #call computer vision server for port detection - implement client too
                 #feedback - port detected
-                #call charging port detection client
+                #call charging port detection client 
                 port_detection_client(True)
                 i+=1 #COMBINE S2 S3 
 ##################################################################################################################### 
@@ -127,7 +137,8 @@ def master():
                 #result CV - raises flag - port not detected
                 #might need to remove collision check
                 s = True
-                while(s):
+                while(s):   
+                    
                     m = port_detection_client_transit(True)
                     r = m.new_goal
                     pose_pub.publish(r)

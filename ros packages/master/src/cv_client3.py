@@ -10,7 +10,7 @@ import master.msg
 
 def port_detection_client_transit(charging_port_goal):
     
-    client = actionlib.SimpleActionClient('port_detect_action',master.msg.stateFiveAction)
+    client = actionlib.SimpleActionClient('port_detect_action',master.msg.latchingAction)
     
     client.wait_for_server()
     
