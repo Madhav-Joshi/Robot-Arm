@@ -109,8 +109,8 @@
     <limit
       lower="0"
       upper="0.71"
-      effort="0"
-      velocity="0" />
+      effort="80.0"
+      velocity="1" />
   </joint>
   <transmission name="prismatic_tran">
     <type>transmission_interface/SimpleTransmission</type>
@@ -177,9 +177,9 @@
       xyz="0 -1 0" />
     <limit
       lower="1.9"
-      upper="6.08"
-      effort="0"
-      velocity="0" />
+      upper="6.6"
+      effort="1.2"
+      velocity="1" />
   </joint>
   <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
@@ -245,10 +245,10 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="-3.14"
-      upper="3.14"
-      effort="0"
-      velocity="0" />
+      lower="-31400"
+      upper="31400"
+      effort="1.2"
+      velocity="1" />
   </joint>
   <transmission name="tran2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -314,10 +314,10 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="-3.14"
-      upper="3.14"
-      effort="0"
-      velocity="0" />
+      lower="-31400"
+      upper="31400"
+      effort="1.2"
+      velocity="1" />
   </joint>
   <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
@@ -385,8 +385,8 @@
     <limit
       lower="-1.82"
       upper="1.82"
-      effort="0"
-      velocity="0" />
+      effort="1.2"
+      velocity="1" />
   </joint>
   <transmission name="tran4">
     <type>transmission_interface/SimpleTransmission</type>
@@ -452,10 +452,10 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="-3.14"
-      upper="3.14"
-      effort="0"
-      velocity="0" />
+      lower="-31400"
+      upper="31400"
+      effort="1.2"
+      velocity="1" />
   </joint>
   <transmission name="tran5">
     <type>transmission_interface/SimpleTransmission</type>
@@ -611,8 +611,8 @@
     <limit
       lower="0"
       upper="0.71"
-      effort="0"
-      velocity="0"/>
+      effort="1.2"
+      velocity="1"/>
 </joint>
 
 </robot>
