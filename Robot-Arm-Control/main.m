@@ -1,7 +1,7 @@
 clc
 clear
 close all
-addpath("cartesian_straight_line\","torque_files\","robot_kinematics\","plotting\","planning\")
+addpath(genpath("cartesian_straight_line\"),genpath("torque_files\"),genpath("robot_kinematics\"),genpath("plotting\"),genpath("planning\"))
 %%
 n_links=6;
 q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
@@ -25,7 +25,7 @@ DH = @(q)[  pi/2        l11+q(1)    l12     0       0;
             -pi/2+q(6)  l5+l61      l62     0       1   ]; % DH Parameters
 
 % read mass and inertia from xlsx and store it in a mat file
-inertia = readmatrix('./torque_files/inertia.csv');
+inertia = readmatrix('inertia.csv');
 
 save('robot_description.mat','inertia','DH','l11','l12','l21','l22','l3','l4','l5','l61','l62','n_links')
 
