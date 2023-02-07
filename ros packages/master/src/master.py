@@ -33,6 +33,7 @@ def master():
         self.after_turn_pose = 
         self.scan_pose = 
 
+        self.bool1 = True
 
         self.port_detected = False
         pose_sub = rospy.Subsriber('/gazebo/robot_position', Float32MultiArray, self.pose_CB)
@@ -67,6 +68,12 @@ def master():
 
     def approximate_goal(self, pose):
     	# go slighly backwards in the frame orientation for approximate goal
+
+    	new_pt = pose[:2,3] - distance*pose[:2,2]
+    	approx_pose = pose
+    	approx_pose[:2,3] = new_pt
+
+    	return 
 
     def run(self):
         i = 0
@@ -105,12 +112,15 @@ def master():
             elif (self.current_task == 's4'):
                 #implement function to compare current pose with goal pose from CV and make it 90 degs
                 #need to publish pose to controls
-                port_detection_client(True) #make location as result
-                #final goal -> approx goal
-                self.goal_pose = self.approximate_goal(self.goal_pose_cv_1) 
+                while (self.bool1)
+	                port_detection_client(True) #make location as result
+	                self.goal_pose = self.approximate_goal(self.goal_pose_cv_1) 
+	                self.bool1=False
 
-                pose_pub.publish(self.goal_pose)
+                pose_pub_final.publish(self.goal_pose)
+                pose_pub_current.publish(self.current_pose)
                 if (self.mat_comp(self.current_pose,self.goal_pose)):
+                	self.bool1 = True
                     i+=1
 
             elif (self.current_task == 's5'):
@@ -128,7 +138,6 @@ def master():
                     i+=1
 
             elif (self.current_task == 's6'):
-
                 # if (self.mat_comp(self.goal_pose_cv_2,self.current_pose)):
                 time.sleep(30)
                 i+=1
@@ -136,12 +145,15 @@ def master():
             elif (self.current_task == 's7'):
                 #calculate position to go back to based on current position from gazebo
                 #fb - current position from gazebo
-                for i in [1]:
+                while(self.bool1)
                 	self.goal pose = approximate_goal(self.current_pose)
+                	self.bool1=False
+
                 pose_pub_final.publish(self.goal_pose)
                 pose_pub_current.publish(self.current_pose)
 
                 if (self.mat_comp(self.current_pose,self.goal_pose)):
+                	self.bool1 = True
                 	i+=1
 
             elif (self.current_task == 's8'):
