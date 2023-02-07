@@ -28,14 +28,18 @@ def master():
         self.latched = False
         #self.initial_pose = None
 
-        #self.obstacle_detection = obstacle_detection_msg()
-        #self.obstacle_distance = obstacle_distance_msg()
+
+        self.home_pose = 
+        self.after_turn_pose = 
+        self.scan_pose = 
+
+
         self.port_detected = False
         pose_sub = rospy.Subsriber('/gazebo/robot_position', Float32MultiArray, self.pose_CB)
-        obstacle_distance_subscriber = rospy.Subsriber("/controls/rotation_matrix", self.obstacle_distance_msg, self.obstacle_distance_CB)
         cv_goal_pos_sub = rospy.Subscriber('/cv/pose', Float32MultiArray, self.cv_goal_cb)
         cv_port_det = rospy.Subscriber('/cv/port_detect', Bool, self.cv_port_cb)
-        pose_pub = rospy.Publisher('/controls/goal_pose', Float32MultiArray, queue_size = 10)
+        pose_pub_final = rospy.Publisher('/planning/goal_pose', Float32MultiArray, queue_size = 10)
+        pose_pub_current = rospy.Publisher('/planning/current_pose', Float32MultiArray, queue_size = 10)
 
     def mat_comp(mat1, mat2):
         if mat1 == mat2 :
@@ -58,7 +62,11 @@ def master():
 
     def pose_CB(self, msg):
         pose = msg
+        #forward kinematics
         self.current_pose = six_to_4x4(msg)
+
+    def approximate_goal(self, pose):
+    	# go slighly backwards in the frame orientation for approximate goal
 
     def run(self):
         i = 0
@@ -71,14 +79,14 @@ def master():
                     i+=1
 
             elif (self.current_task == 's1'):
-                #implement function to compare current pose with goal pose
                 #need to publish pose to controls
-
+                self.goal_pose = self.after_turn_pose
+                self.pose_pub_final.publish(self.goal_pose)
+                self.pose_pub_current.publish(self.current_pose)
                 #NEED TO DEFINE GOAL POSE
-                pose_pub.publish(self.flat_from_4x4(self.goal_pose))
                 if (mat_comp(self.pose_CB, self.goal_pose)):
                     i+=1
-
+###################################################################################################################
             elif (self.current_task == 's2'):
                 #call Computer vision server for car detection and use client function - will implement
                 #feedback - car detected
@@ -93,14 +101,16 @@ def master():
                 #call charging port detection client
                 port_detection_client(True)
                 i+=1 #COMBINE S2 S3 
-
+##################################################################################################################### 
             elif (self.current_task == 's4'):
                 #implement function to compare current pose with goal pose from CV and make it 90 degs
                 #need to publish pose to controls
                 port_detection_client(True) #make location as result
                 #final goal -> approx goal
-                pose_pub.publish(self.goal_pose_cv_1)
-                if (self.current_pose == self.flat_to_4x4(self.goal_pose_cv)):
+                self.goal_pose = self.approximate_goal(self.goal_pose_cv_1) 
+
+                pose_pub.publish(self.goal_pose)
+                if (self.mat_comp(self.current_pose,self.goal_pose)):
                     i+=1
 
             elif (self.current_task == 's5'):
@@ -118,18 +128,29 @@ def master():
                     i+=1
 
             elif (self.current_task == 's6'):
-                #need to know how to get this latched feedback
-                if (self.goal_pose_cv_2 == flat_from_4x4(self.current_pose)):
-                    time.sleep(30)
-                    i+=1
+
+                # if (self.mat_comp(self.goal_pose_cv_2,self.current_pose)):
+                time.sleep(30)
+                i+=1
 
             elif (self.current_task == 's7'):
                 #calculate position to go back to based on current position from gazebo
                 #fb - current position from gazebo
-                i+=1
+                for i in [1]:
+                	self.goal pose = approximate_goal(self.current_pose)
+                pose_pub_final.publish(self.goal_pose)
+                pose_pub_current.publish(self.current_pose)
+
+                if (self.mat_comp(self.current_pose,self.goal_pose)):
+                	i+=1
 
             elif (self.current_task == 's8'):
                 #take current position of car and compare with initial position
                 #when equal, go to reset state
-                if (self.current_pose == self.initial_pose):
+
+                self.goal_pose = self.home_pose
+                pose_pub_final.publish(self.goal_pose)
+                pose_pub_current.publish(self.current_pose)
+
+                if (self.mat_comp(self.current_pose,self.home_pose)):
                     i = 0
