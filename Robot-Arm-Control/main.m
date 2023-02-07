@@ -1,6 +1,7 @@
 clc
 clear
 close all
+addpath(genpath("cartesian_straight_line\"),genpath("torque_files\"),genpath("robot_kinematics\"),genpath("plotting\"),genpath("planning\"))
 %%
 n_links=6;
 q = [0.75;pi/2;-pi/2;pi/2;-pi/4;0];
