@@ -29,14 +29,11 @@ def forwardKinematicsAllJoints(q):
             [-np.pi/2+q[5,0],  l5+l61,      l62,     0,       1]   ])
     
     dh = DH(q)
-    print(np.round(dh,2))
+
 
     T = np.eye(4)
     for j in range(6):
         T = T @ transDH(dh[j,:4])
-        #print(np.round(transDH(dh[j,:4]),2))
-        #print(np.round(T,2))
-        print('\n')
 
     return T
 
