@@ -12,17 +12,17 @@ fig = figure; clf
 %% plot
 % load('q.mat')
 force_to_tau_conversion =  0.00793;
-plot(time_sequence1, tau1(1, :)*force_to_tau_conversion ,'LineWidth',1);
+plot(time_sequence_s, tau_s(1, :)*force_to_tau_conversion ,'LineWidth',1);
 hold on
-plot(time_sequence1,tau1(2, :),'LineWidth',1);
+plot(time_sequence_s,tau_s(2, :),'LineWidth',1);
 hold on
-plot(time_sequence1, tau1(3, :),'LineWidth',1);
+plot(time_sequence_s, tau_s(3, :),'LineWidth',1);
 hold on
-plot(time_sequence1,tau1(4, :),'LineWidth',1);
+plot(time_sequence_s,tau_s(4, :),'LineWidth',1);
 hold on
-plot(time_sequence1,tau1(5, :),'LineWidth',1);
+plot(time_sequence_s,tau_s(5, :),'LineWidth',1);
 hold on
-plot(time_sequence1,tau1(6, :),'LineWidth',1);
+plot(time_sequence_s,tau_s(6, :),'LineWidth',1);
 hold on
 
 %% plot

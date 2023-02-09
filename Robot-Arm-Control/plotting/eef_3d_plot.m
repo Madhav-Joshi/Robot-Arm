@@ -19,15 +19,15 @@ for i=1:time_steps
     T_ = forwardKinematicsAllJoints(joint_space_traversed(:, i)) ;
     eef(:, i) = T_(:,:,6) * base_frame;
 end
-set(gca,'Xticklabel',[])
-set(gca,'Yticklabel',[])
-set(gca,'Zticklabel',[])
+% set(gca,'Xticklabel',[])
+% set(gca,'Yticklabel',[])
+% set(gca,'Zticklabel',[])
 box_6_dof_plot2(joint_space_traversed(:, 1), 0.25, 1)
 hold on
 p = plot3(eef(1, :), eef(2, :), eef(3, :));
 hold off
 % box_6_dof_plot2(joint_space_traversed(:, 61), 0.25, 0)
-% box_6_dof_plot2(q(:, 2*time_steps/4), 0.7, 0)
+% % box_6_dof_plot2(q(:, 2*time_steps/4), 0.7, 0)
 % box_6_dof_plot2(joint_space_traversed(:, 121), 0.25, 0)
 box_6_dof_plot2(joint_space_traversed(:, time_steps), 1.0, 0)
 grid on
@@ -35,6 +35,7 @@ p.LineWidth = 2;
 xlim([-1, 1]);
 ylim([-0.8, 1]);
 zlim([0, 3]);
+legend(p,'Energy: ' + string(energy_s))
 axis equal
 
 % %% plot

@@ -14,7 +14,7 @@ function torque = torque6dof(q,q_dot,q_dotdot)
         m(i) = inertia(i,2);
         I0(:,:,i) = reshape(inertia(i,6:end),[3 3])';
     end
-    lc = [lc;ones(1,n+1)] % For multiplication with transformation matrices
+    lc = [lc;ones(1,n+1)]; % For multiplication with transformation matrices
        
     V0 = [0;0;0;0;0;0]; % Twist of the frame 0
     Vdot0 = [0;0;0;0;0;-9.81];
@@ -42,7 +42,6 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     for i=2:n
         xc(:,i)=Tinv(T0(:,:,i-1))*lc(:,i);
     end
-    xc=xc
 
     I = zeros(3,3,n); % Convert to ith frame orientation
     for i=1:n
@@ -55,7 +54,6 @@ function torque = torque6dof(q,q_dot,q_dotdot)
     for i=1:n
         A(:,i) = [0;0;dh(i,5);(-dh(i,5)*box3([0;0;1])*xc(1:3,i) + (1-dh(i,5))*[0;0;1])];
     end
-    A = A
     
     % M(:,:,i) is the initial transformation matrix of frame i-1 wrt frame i
     M = zeros(4,4,n+1);
